@@ -8,7 +8,12 @@
     :root {
       color-scheme: light dark;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      --card-width: clamp(230px, 18vw + 6rem, 320px);
+      --card-base: clamp(230px, 18vw + 6rem, 320px);
+      --card-16-9: 520px;
+      --card-width: min(var(--card-base), var(--card-16-9));
+      --grid-gap: clamp(1rem, 3vw, 2rem);
+      --page-padding: clamp(1rem, 4vw, 3rem);
+      --header-space: clamp(8rem, 11vw, 10rem);
       --transition: 0.6s;
       --accent: #3f68ff;
     }
@@ -19,7 +24,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: clamp(1rem, 4vw, 3rem) 1rem;
+      padding: var(--page-padding) 1rem;
       background: radial-gradient(circle at top, #f2f4ff 0%, #e3e6ff 40%, #c3ccff 100%);
       color: #1b1b2f;
     }
@@ -28,16 +33,20 @@
       width: min(1000px, 100%);
       text-align: center;
       margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1.25rem, 2vw, 2rem);
     }
 
     h1 {
       font-size: clamp(1.8rem, 2.8vw + 1rem, 3rem);
-      margin-bottom: 1rem;
+      margin: 0;
       color: #1b1b2f;
     }
 
     p.subtitle {
-      margin: 0 auto 2rem;
+      margin: 0 auto;
       max-width: 680px;
       color: #3d3d57;
       font-size: clamp(1rem, 0.8vw + 0.85rem, 1.1rem);
@@ -47,8 +56,9 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: clamp(1rem, 3vw, 2rem);
+      gap: var(--grid-gap);
       justify-items: center;
+      width: 100%;
     }
 
     .card {
@@ -98,6 +108,35 @@
       gap: 0.75rem;
     }
 
+    .card-face p {
+      margin: 0;
+    }
+
+    .card-number {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1b1b2f;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-face.front .card-number {
+      color: var(--accent);
+    }
+
+    .card-face.back .card-number {
+      background: rgba(63, 104, 255, 0.12);
+      color: var(--accent);
+    }
+
     .avatar {
       width: clamp(64px, 10vw, 82px);
       height: clamp(64px, 10vw, 82px);
@@ -123,9 +162,22 @@
       line-height: 1.45;
     }
 
+    @media (min-width: 961px) {
+      :root {
+        --frame-height: calc(min(100vh, 56.25vw) - (2 * var(--page-padding)) - var(--header-space));
+        --card-16-9: max(60px, calc((var(--frame-height) - 2 * var(--grid-gap)) * 4 / 9));
+      }
+
+      main {
+        gap: clamp(1.5rem, 2vw, 2.25rem);
+      }
+    }
+
     @media (max-width: 960px) {
       :root {
-        --card-width: clamp(240px, 26vw + 4rem, 340px);
+        --card-base: clamp(240px, 26vw + 4rem, 340px);
+        --card-16-9: 520px;
+        --card-width: min(var(--card-base), var(--card-16-9));
       }
 
       body {
@@ -139,7 +191,9 @@
 
     @media (max-width: 680px) {
       :root {
-        --card-width: clamp(240px, 42vw + 1rem, 360px);
+        --card-base: clamp(240px, 42vw + 1rem, 360px);
+        --card-16-9: 520px;
+        --card-width: min(var(--card-base), var(--card-16-9));
       }
 
       body {
@@ -179,7 +233,9 @@
 
     @media (max-width: 520px) {
       :root {
-        --card-width: min(100%, 360px);
+        --card-base: min(100%, 360px);
+        --card-16-9: 520px;
+        --card-width: min(var(--card-base), var(--card-16-9));
       }
 
       .grid {
@@ -203,90 +259,126 @@
     <h1>Team Records & Traits</h1>
     <p class="subtitle">Tap any card to reveal the teammate behind the record. Each flip shows the person, their avatar, and their standout trait.</p>
     <section class="grid" role="list">
-      <article class="card" role="listitem" aria-label="Click to reveal team member">
+      <article class="card" role="listitem" aria-label="Card 1: Click to reveal team member">
         <div class="card-inner">
-          <div class="card-face front">I’m the one who has visited the most countries in our team.</div>
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">1</span>
+            <p>I’m the one who has visited the most countries in our team.</p>
+          </div>
           <div class="card-face back">
+            <span class="card-number" aria-hidden="true">1</span>
             <div class="avatar" aria-hidden="true">A</div>
             <div class="name">Amelia Torres</div>
             <div class="trait">I’m the one who has visited the most countries in our team.</div>
           </div>
         </div>
       </article>
-      <article class="card" role="listitem" aria-label="Click to reveal team member">
+      <article class="card" role="listitem" aria-label="Card 2: Click to reveal team member">
         <div class="card-inner">
-          <div class="card-face front">I once ran a marathon on every continent.</div>
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">2</span>
+            <p>I once ran a marathon on every continent.</p>
+          </div>
           <div class="card-face back">
+            <span class="card-number" aria-hidden="true">2</span>
             <div class="avatar" aria-hidden="true">B</div>
             <div class="name">Benjamin Lee</div>
             <div class="trait">I once ran a marathon on every continent.</div>
           </div>
         </div>
       </article>
-      <article class="card" role="listitem" aria-label="Click to reveal team member">
+      <article class="card" role="listitem" aria-label="Card 3: Click to reveal team member">
         <div class="card-inner">
-          <div class="card-face front">I hold the office record for the fastest puzzle escape.</div>
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">3</span>
+            <p>I hold the office record for the fastest puzzle escape.</p>
+          </div>
           <div class="card-face back">
+            <span class="card-number" aria-hidden="true">3</span>
             <div class="avatar" aria-hidden="true">C</div>
             <div class="name">Chiara Rossi</div>
             <div class="trait">I hold the office record for the fastest puzzle escape.</div>
           </div>
         </div>
       </article>
-      <article class="card" role="listitem" aria-label="Click to reveal team member">
+      <article class="card" role="listitem" aria-label="Card 4: Click to reveal team member">
         <div class="card-inner">
-          <div class="card-face front">I brew the best cold brew coffee according to our taste tests.</div>
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">4</span>
+            <p>I brew the best cold brew coffee according to our taste tests.</p>
+          </div>
           <div class="card-face back">
+            <span class="card-number" aria-hidden="true">4</span>
             <div class="avatar" aria-hidden="true">D</div>
             <div class="name">Diego Morales</div>
             <div class="trait">I brew the best cold brew coffee according to our taste tests.</div>
           </div>
         </div>
       </article>
-      <article class="card" role="listitem" aria-label="Click to reveal team member">
+      <article class="card" role="listitem" aria-label="Card 5: Click to reveal team member">
         <div class="card-inner">
-          <div class="card-face front">I am undefeated in our team’s trivia nights.</div>
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">5</span>
+            <p>I am undefeated in our team’s trivia nights.</p>
+          </div>
           <div class="card-face back">
+            <span class="card-number" aria-hidden="true">5</span>
             <div class="avatar" aria-hidden="true">E</div>
             <div class="name">Elena Park</div>
             <div class="trait">I am undefeated in our team’s trivia nights.</div>
           </div>
         </div>
       </article>
-      <article class="card" role="listitem" aria-label="Click to reveal team member">
+      <article class="card" role="listitem" aria-label="Card 6: Click to reveal team member">
         <div class="card-inner">
-          <div class="card-face front">I coded our first internal chatbot in a weekend.</div>
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">6</span>
+            <p>I coded our first internal chatbot in a weekend.</p>
+          </div>
           <div class="card-face back">
+            <span class="card-number" aria-hidden="true">6</span>
             <div class="avatar" aria-hidden="true">F</div>
             <div class="name">Felix Grant</div>
             <div class="trait">I coded our first internal chatbot in a weekend.</div>
           </div>
         </div>
       </article>
-      <article class="card" role="listitem" aria-label="Click to reveal team member">
+      <article class="card" role="listitem" aria-label="Card 7: Click to reveal team member">
         <div class="card-inner">
-          <div class="card-face front">I can juggle five flaming torches (safely!).</div>
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">7</span>
+            <p>I can juggle five flaming torches (safely!).</p>
+          </div>
           <div class="card-face back">
+            <span class="card-number" aria-hidden="true">7</span>
             <div class="avatar" aria-hidden="true">G</div>
             <div class="name">Grace Ibrahim</div>
             <div class="trait">I can juggle five flaming torches (safely!).</div>
           </div>
         </div>
       </article>
-      <article class="card" role="listitem" aria-label="Click to reveal team member">
+      <article class="card" role="listitem" aria-label="Card 8: Click to reveal team member">
         <div class="card-inner">
-          <div class="card-face front">I speak seven languages fluently.</div>
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">8</span>
+            <p>I speak seven languages fluently.</p>
+          </div>
           <div class="card-face back">
+            <span class="card-number" aria-hidden="true">8</span>
             <div class="avatar" aria-hidden="true">H</div>
             <div class="name">Hana Suzuki</div>
             <div class="trait">I speak seven languages fluently.</div>
           </div>
         </div>
       </article>
-      <article class="card" role="listitem" aria-label="Click to reveal team member">
+      <article class="card" role="listitem" aria-label="Card 9: Click to reveal team member">
         <div class="card-inner">
-          <div class="card-face front">I have the most patents filed in our company.</div>
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">9</span>
+            <p>I have the most patents filed in our company.</p>
+          </div>
           <div class="card-face back">
+            <span class="card-number" aria-hidden="true">9</span>
             <div class="avatar" aria-hidden="true">I</div>
             <div class="name">Isaac Nolan</div>
             <div class="trait">I have the most patents filed in our company.</div>
