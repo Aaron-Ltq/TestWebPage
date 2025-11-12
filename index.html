@@ -8,8 +8,7 @@
     :root {
       color-scheme: light dark;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      --card-min-width: 210px;
-      --card-max-width: 300px;
+      --card-width: clamp(230px, 18vw + 6rem, 320px);
       --transition: 0.6s;
       --accent: #3f68ff;
     }
@@ -47,13 +46,13 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width), 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: clamp(1rem, 3vw, 2rem);
       justify-items: center;
     }
 
     .card {
-      width: min(100%, var(--card-max-width));
+      width: min(100%, var(--card-width));
       aspect-ratio: 4 / 3;
       perspective: 1000px;
       cursor: pointer;
@@ -124,17 +123,25 @@
       line-height: 1.45;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 960px) {
+      :root {
+        --card-width: clamp(240px, 26vw + 4rem, 340px);
+      }
+
       body {
         padding: clamp(1rem, 6vw, 2rem) 1.25rem;
       }
 
       .grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 680px) {
+      :root {
+        --card-width: clamp(240px, 42vw + 1rem, 360px);
+      }
+
       body {
         padding: clamp(0.75rem, 5vw, 1.5rem);
       }
@@ -152,11 +159,12 @@
       }
 
       .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1rem;
       }
 
       .card {
-        width: 100%;
+        aspect-ratio: 1 / 1.35;
       }
 
       .card-face.front,
@@ -166,6 +174,20 @@
 
       .card-face {
         padding: 1.25rem;
+      }
+    }
+
+    @media (max-width: 520px) {
+      :root {
+        --card-width: min(100%, 360px);
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        aspect-ratio: 4 / 3;
       }
     }
 
