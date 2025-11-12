@@ -388,9 +388,23 @@
     </section>
   </main>
   <script>
-    document.querySelectorAll('.card').forEach((card) => {
+    const cards = document.querySelectorAll('.card');
+    let activeCard = null;
+
+    cards.forEach((card) => {
       card.addEventListener('click', () => {
-        card.classList.toggle('flipped');
+        if (card === activeCard) {
+          card.classList.remove('flipped');
+          activeCard = null;
+          return;
+        }
+
+        if (activeCard) {
+          activeCard.classList.remove('flipped');
+        }
+
+        card.classList.add('flipped');
+        activeCard = card;
       });
     });
   </script>
