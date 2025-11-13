@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Traits Grid</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      --card-base: clamp(230px, 18vw + 6rem, 320px);
+      --card-16-9: 520px;
+      --card-width: min(var(--card-base), var(--card-16-9));
+      --grid-gap: clamp(1rem, 3vw, 2rem);
+      --page-padding: clamp(1rem, 4vw, 3rem);
+      --header-space: clamp(8rem, 11vw, 10rem);
+      --transition: 0.6s;
+      --accent: #3f68ff;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--page-padding) 1rem;
+      background: radial-gradient(circle at top, #f2f4ff 0%, #e3e6ff 40%, #c3ccff 100%);
+      color: #1b1b2f;
+    }
+
+    main {
+      width: min(1000px, 100%);
+      text-align: center;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1.25rem, 2vw, 2rem);
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 2.8vw + 1rem, 3rem);
+      margin: 0;
+      color: #1b1b2f;
+    }
+
+    p.subtitle {
+      margin: 0 auto;
+      max-width: 680px;
+      color: #3d3d57;
+      font-size: clamp(1rem, 0.8vw + 0.85rem, 1.1rem);
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--grid-gap);
+      justify-items: center;
+      width: 100%;
+    }
+
+    .card {
+      width: min(100%, var(--card-width));
+      aspect-ratio: 4 / 3;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform var(--transition) ease;
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      background: rgba(255, 255, 255, 0.88);
+      overflow: hidden;
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      backface-visibility: hidden;
+    }
+
+    .card-face.front {
+      background: linear-gradient(140deg, rgba(63, 104, 255, 0.85), rgba(63, 104, 255, 0.35));
+      color: #fff;
+      font-size: clamp(1rem, 1.2vw + 0.85rem, 1.15rem);
+      line-height: 1.45;
+    }
+
+    .card-face.back {
+      background: #fff;
+      transform: rotateY(180deg);
+      gap: 0.75rem;
+    }
+
+    .card-face p {
+      margin: 0;
+    }
+
+    .card-number {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1b1b2f;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-face.front .card-number {
+      color: var(--accent);
+    }
+
+    .card-face.back .card-number {
+      background: rgba(63, 104, 255, 0.12);
+      color: var(--accent);
+    }
+
+    .name {
+      font-size: clamp(1.1rem, 1.3vw + 1rem, 1.25rem);
+      font-weight: 600;
+      color: #1f1f39;
+    }
+
+    .trait {
+      font-size: clamp(0.95rem, 1vw + 0.75rem, 1.05rem);
+      color: #3d3d57;
+      line-height: 1.45;
+    }
+
+    @media (min-width: 961px) {
+      :root {
+        --frame-height: calc(min(100vh, 56.25vw) - (2 * var(--page-padding)) - var(--header-space));
+        --card-16-9: max(60px, calc((var(--frame-height) - 2 * var(--grid-gap)) * 4 / 9));
+      }
+
+      main {
+        gap: clamp(1.5rem, 2vw, 2.25rem);
+      }
+    }
+
+    @media (max-width: 960px) {
+      :root {
+        --card-base: clamp(240px, 26vw + 4rem, 340px);
+        --card-16-9: 520px;
+        --card-width: min(var(--card-base), var(--card-16-9));
+      }
+
+      body {
+        padding: clamp(1rem, 6vw, 2rem) 1.25rem;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      :root {
+        --card-base: clamp(240px, 42vw + 1rem, 360px);
+        --card-16-9: 520px;
+        --card-width: min(var(--card-base), var(--card-16-9));
+      }
+
+      body {
+        padding: clamp(0.75rem, 5vw, 1.5rem);
+      }
+
+      main {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: clamp(1.7rem, 6vw + 1rem, 2.4rem);
+      }
+
+      p.subtitle {
+        margin-bottom: 1.5rem;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+
+      .card {
+        aspect-ratio: 1 / 1.35;
+      }
+
+      .card-face.front,
+      .trait {
+        font-size: 1rem;
+      }
+
+      .card-face {
+        padding: 1.25rem;
+      }
+    }
+
+    @media (max-width: 520px) {
+      :root {
+        --card-base: min(100%, 360px);
+        --card-16-9: 520px;
+        --card-width: min(var(--card-base), var(--card-16-9));
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        aspect-ratio: 4 / 3;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card-inner {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Team Records & Traits</h1>
+    <p class="subtitle">Tap any card to reveal the teammate behind the record and learn who owns each standout trait.</p>
+    <section class="grid" role="list">
+      <article class="card" role="listitem" aria-label="Card 1: Click to reveal team member">
+        <div class="card-inner">
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">1</span>
+            <p>I'm the one who ever had a pet snake.</p>
+          </div>
+          <div class="card-face back">
+            <span class="card-number" aria-hidden="true">1</span>
+            <div class="name">Wenjun Gong</div>
+            <div class="trait">I'm the one who ever had a pet snake.</div>
+          </div>
+        </div>
+      </article>
+      <article class="card" role="listitem" aria-label="Card 2: Click to reveal team member">
+        <div class="card-inner">
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">2</span>
+            <p>I was the first on our team to buy Tesla FSD in 2019.</p>
+          </div>
+          <div class="card-face back">
+            <span class="card-number" aria-hidden="true">2</span>
+            <div class="name">Aaron Liu</div>
+            <div class="trait">I was the first on our team to buy Tesla FSD in 2019.</div>
+          </div>
+        </div>
+      </article>
+      <article class="card" role="listitem" aria-label="Card 3: Click to reveal team member">
+        <div class="card-inner">
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">3</span>
+            <p>Make the fastest decision for a very hard topic - I was supposed to just rent a place but i decided to buy it in 30 mins.</p>
+          </div>
+          <div class="card-face back">
+            <span class="card-number" aria-hidden="true">3</span>
+            <div class="name">Yuanquan Hu</div>
+            <div class="trait">Make the fastest decision for a very hard topic - I was supposed to just rent a place but i decided to buy it in 30 mins.</div>
+          </div>
+        </div>
+      </article>
+      <article class="card" role="listitem" aria-label="Card 4: Click to reveal team member">
+        <div class="card-inner">
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">4</span>
+            <p>I’m the one who has boxed for 4 years.</p>
+          </div>
+          <div class="card-face back">
+            <span class="card-number" aria-hidden="true">4</span>
+            <div class="name">Adrian Wu</div>
+            <div class="trait">I’m the one who has boxed for 4 years.</div>
+          </div>
+        </div>
+      </article>
+      <article class="card" role="listitem" aria-label="Card 5: Click to reveal team member">
+        <div class="card-inner">
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">5</span>
+            <p>I'm the one who saved tons of workout videos, but I never actually use them.</p>
+          </div>
+          <div class="card-face back">
+            <span class="card-number" aria-hidden="true">5</span>
+            <div class="name">Skylar Pan</div>
+            <div class="trait">I'm the one who saved tons of workout videos, but I never actually use them.</div>
+          </div>
+        </div>
+      </article>
+      <article class="card" role="listitem" aria-label="Card 6: Click to reveal team member">
+        <div class="card-inner">
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">6</span>
+            <p>The one who walked into a meeting with Excel and walked out officially in Excel team.</p>
+          </div>
+          <div class="card-face back">
+            <span class="card-number" aria-hidden="true">6</span>
+            <div class="name">Zhongzhong Li</div>
+            <div class="trait">The one who walked into a meeting with Excel and walked out officially in Excel team.</div>
+          </div>
+        </div>
+      </article>
+      <article class="card" role="listitem" aria-label="Card 7: Click to reveal team member">
+        <div class="card-inner">
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">7</span>
+            <p>I’m the one who play bass in an amateur band.</p>
+          </div>
+          <div class="card-face back">
+            <span class="card-number" aria-hidden="true">7</span>
+            <div class="name">Adrian Wu</div>
+            <div class="trait">I’m the one who play bass in an amateur band.</div>
+          </div>
+        </div>
+      </article>
+      <article class="card" role="listitem" aria-label="Card 8: Click to reveal team member">
+        <div class="card-inner">
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">8</span>
+            <p>I’m the one who organized my desktop/house just to procrastinate actual homework.</p>
+          </div>
+          <div class="card-face back">
+            <span class="card-number" aria-hidden="true">8</span>
+            <div class="name">Skylar Pan</div>
+            <div class="trait">I’m the one who organized my desktop/house just to procrastinate actual homework.</div>
+          </div>
+        </div>
+      </article>
+      <article class="card" role="listitem" aria-label="Card 9: Click to reveal team member">
+        <div class="card-inner">
+          <div class="card-face front">
+            <span class="card-number" aria-hidden="true">9</span>
+            <p>The one who has worked on both SP WebParts and Access apps back in the day.</p>
+          </div>
+          <div class="card-face back">
+            <span class="card-number" aria-hidden="true">9</span>
+            <div class="name">Zhongzhong Li</div>
+            <div class="trait">The one who has worked on both SP WebParts and Access apps back in the day.</div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+  <script>
+    const cards = document.querySelectorAll('.card');
+    let activeCard = null;
+
+    cards.forEach((card) => {
+      card.addEventListener('click', () => {
+        if (card === activeCard) {
+          card.classList.remove('flipped');
+          activeCard = null;
+          return;
+        }
+
+        if (activeCard) {
+          activeCard.classList.remove('flipped');
+        }
+
+        card.classList.add('flipped');
+        activeCard = card;
+      });
+    });
+  </script>
+</body>
+</html>
