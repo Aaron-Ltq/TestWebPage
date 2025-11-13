@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hello Paul Deck</title>
+<style>
+  html,body{
+    margin:0;padding:0;height:100%;
+    background:black;color:white;
+    font-family:"Segoe UI",Arial,sans-serif;
+    overflow:hidden;
+  }
+  .slide{
+    display:none;
+    justify-content:center;align-items:center;flex-direction:column;
+    height:100vh;width:100vw;text-align:center;
+    transition:opacity .6s ease;
+    padding:0 6vw;box-sizing:border-box;
+  }
+  .active{display:flex;}
+ 
+  .gradient-blue{
+    background:linear-gradient(270deg,#6a11cb,#2575fc,#00c6ff,#6a11cb);
+    background-size:600% 600%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:shine 6s linear infinite;
+  }
+  .gradient-pink{
+    background:linear-gradient(270deg,#ff4d8d,#ff6b6b,#ff9a9e,#ff4d8d);
+    background-size:600% 600%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:shine 6s linear infinite;
+  }
+  @keyframes shine{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+ 
+  .controls{
+    position:absolute;bottom:30px;width:100%;
+    display:flex;justify-content:space-between;
+    padding:0 50px;box-sizing:border-box;
+  }
+  button{
+    background:rgba(255,255,255,0.1);color:white;
+    border:2px solid white;border-radius:10px;
+    padding:10px 30px;font-size:1.2em;cursor:pointer;
+    transition:background .3s ease;
+  }
+  button:hover{background:rgba(255,255,255,0.3);}
+ 
+  h1{font-size:5em;line-height:1.05;margin:.1em 0;}
+  h2{font-size:2.2em;margin:.2em 0;}
+  p{max-width:1000px;font-size:1.4em;line-height:1.5;}
+ 
+  .agenda{
+    list-style:none;padding:0;margin:1.6em 0 0;
+    font-size:1.8em;line-height:1.6;text-align:left;
+  }
+  .agenda li{margin:.4em 0;}
+  .agenda li span{font-weight:600;}
+ 
+  .video-wrapper{
+    width:min(960px,90vw);height:min(540px,60vh);
+    border-radius:18px;overflow:hidden;
+    border:1px solid rgba(255,255,255,0.18);
+    box-shadow:0 18px 60px rgba(0,0,0,0.4);
+  }
+  .video-wrapper iframe{
+    width:100%;height:100%;border:0;
+  }
+ 
+  .team-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:2.5vw;width:min(1200px,90vw);
+  }
+  .team-card{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:18px;padding:1.6rem;
+    font-size:1.4em;line-height:1.4;
+  }
+  .team-card h3{
+    margin:0 0 .6em;font-size:1.6em;
+  }
+ 
+  .closing{
+    font-size:2.2em;margin-top:.8em;
+  }
+</style>
+</head>
+<body>
+ 
+<!-- 1: Opening -->
+<div class="slide active" id="slide1">
+  <h1 class="gradient-blue">Hello Paul!</h1>
+  <h2 class="gradient-pink">Nov 13th 2025</h2>
+</div>
+ 
+<!-- 2: Agenda -->
+<div class="slide" id="slide2">
+  <h1 class="gradient-blue">Agenda</h1>
+  <ul class="agenda">
+    <li><span>Opening &amp; Icebreaker</span> (10mins)</li>
+    <li><span>Round table discussion</span> (30mins)</li>
+    <li><span>Open Q&amp;A / Closing</span> (10mins)</li>
+  </ul>
+</div>
+ 
+<!-- 3: Team Cover -->
+<div class="slide" id="slide3">
+  <h1 class="gradient-pink">Our Team</h1>
+  <div class="team-grid">
+    <div class="team-card">
+      <h3>Leadership</h3>
+      <p>Guiding vision and strategy to keep us focused on the work that matters most.</p>
+    </div>
+    <div class="team-card">
+      <h3>Product</h3>
+      <p>Crafting delightful experiences that resonate with customers and drive outcomes.</p>
+    </div>
+    <div class="team-card">
+      <h3>Engineering</h3>
+      <p>Building robust, scalable solutions that bring ideas to life with excellence.</p>
+    </div>
+    <div class="team-card">
+      <h3>Operations</h3>
+      <p>Ensuring smooth execution with the right support systems, processes, and insights.</p>
+    </div>
+  </div>
+</div>
+ 
+<!-- 4: Video -->
+<div class="slide" id="slide4">
+  <h1 class="gradient-blue">Highlight Reel</h1>
+  <div class="video-wrapper">
+    <iframe src="https://microsoftapc-my.sharepoint.com/:v:/g/personal/v-junyubao_microsoft_com/EScbZupA4MNLs2rKFofHr64BGqmUAlc4EBXDKEue9BDtLQ?e=XyXAil" allowfullscreen></iframe>
+  </div>
+  <p>Take a moment to watch the story that brings our latest milestones to life.</p>
+</div>
+ 
+<!-- 5: Closing -->
+<div class="slide" id="slide5">
+  <h1 class="gradient-pink">Thank You</h1>
+  <p class="closing">Looking forward to an inspiring session together.</p>
+</div>
+ 
+<!-- Controls -->
+<div class="controls">
+  <button id="prev">⟵ Back</button>
+  <button id="next">Next ⟶</button>
+</div>
+ 
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+ 
+  function showSlide(i){
+    slides.forEach((s,n)=>s.classList.toggle('active', n===i));
+  }
+ 
+  function next(){ current = (current+1) % slides.length; showSlide(current); }
+  function prev(){ current = (current-1+slides.length) % slides.length; showSlide(current); }
+ 
+  document.getElementById('next').onclick = next;
+  document.getElementById('prev').onclick = prev;
+ 
+  document.addEventListener('keydown', e=>{
+    if(e.key==='ArrowRight' || e.key===' ') next();
+    if(e.key==='ArrowLeft') prev();
+  });
+</script>
+</body>
+</html>
