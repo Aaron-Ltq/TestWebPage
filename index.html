@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Dashboard</title>
+  <style>
+    :root {
+      --bg: #0d0f1b;
+      --card: #121426;
+      --panel: #1a1d2f;
+      --text: #f1f3f7;
+      --muted: #8d93a7;
+      --green: #2ad674;
+      --red: #e74c3c;
+      --blue: #4fa1ff;
+      --purple: #a971ff;
+      --amber: #f6c343;
+      --border: #23273f;
+      --table-header: #151a26;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 20%, rgba(79, 161, 255, 0.12), transparent 35%),
+        radial-gradient(circle at 80% 0%, rgba(42, 214, 116, 0.12), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 24px;
+      width: min(1200px, 100%);
+    }
+
+    .card {
+      background: linear-gradient(135deg, rgba(27, 31, 49, 0.9), rgba(17, 20, 33, 0.9));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    .left-card {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .title .icon {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #4fa1ff, #63e0c7);
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: #0c1220;
+      font-weight: 900;
+      font-size: 14px;
+      box-shadow: 0 10px 25px rgba(79, 161, 255, 0.35);
+    }
+
+    .search {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--panel);
+      padding: 8px 12px;
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .badge {
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0b1220;
+      background: linear-gradient(135deg, #f6c343, #f09f21);
+      box-shadow: 0 8px 20px rgba(240, 159, 33, 0.35);
+    }
+
+    .section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .progress-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+
+    .progress-label {
+      flex: 1;
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .progress {
+      position: relative;
+      flex: 1;
+      height: 12px;
+      background: var(--panel);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress span {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      display: block;
+    }
+
+    .progress-value {
+      min-width: 54px;
+      text-align: right;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .metrics {
+      background: var(--panel);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .metric {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .metric-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .table-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--panel);
+      border: 1px solid var(--border);
+    }
+
+    thead {
+      background: var(--table-header);
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.4px;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th:first-child, td:first-child {
+      text-align: left;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    .status.pass {
+      background: rgba(42, 214, 116, 0.15);
+      color: var(--green);
+    }
+
+    .status.fail {
+      background: rgba(231, 76, 60, 0.16);
+      color: var(--red);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 46px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 13px;
+      color: #0c1220;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03), 0 6px 16px rgba(0, 0, 0, 0.18);
+    }
+
+    .pill.green { background: linear-gradient(135deg, #45e5aa, #1f9d63); color: #092015; }
+    .pill.blue { background: linear-gradient(135deg, #6fb5ff, #3c7bff); }
+    .pill.purple { background: linear-gradient(135deg, #c09cff, #7a4dff); }
+    .pill.teal { background: linear-gradient(135deg, #63e0c7, #2a9d90); }
+
+    tbody td:nth-child(n+2) {
+      color: #cfe5ff;
+      font-weight: 700;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: -4px;
+    }
+
+    @media (max-width: 960px) {
+      body { padding: 18px; }
+      .dashboard { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="card left-card">
+      <div class="header">
+        <div class="title">
+          <div class="icon">QA</div>
+          <div>
+            <div>Web Search</div>
+            <div class="subtle">Execution quality</div>
+          </div>
+        </div>
+        <div class="badge">75% · Pass</div>
+      </div>
+
+      <div>
+        <div class="section-title">Flows</div>
+        <div class="progress-item">
+          <div class="progress-label">TDD</div>
+          <div class="progress" aria-label="TDD 50%">
+            <span style="width: 50%; background: linear-gradient(90deg, #4fa1ff, #63e0c7);"></span>
+          </div>
+          <div class="progress-value">50%</div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label">Hero E2E</div>
+          <div class="progress" aria-label="Hero E2E 0%">
+            <span style="width: 100%; background: rgba(231, 76, 60, 0.35);"></span>
+          </div>
+          <div class="progress-value" style="color: var(--red);">0%</div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label">Basic</div>
+          <div class="progress" aria-label="Basic 66%">
+            <span style="width: 66%; background: linear-gradient(90deg, #45e5aa, #1f9d63);"></span>
+          </div>
+          <div class="progress-value" style="color: var(--green);">66%</div>
+        </div>
+        <div class="progress-item" style="margin-bottom: 4px;">
+          <div class="progress-label">Advanced</div>
+          <div class="progress" aria-label="Advanced 0%">
+            <span style="width: 0%; background: rgba(231, 76, 60, 0.4);"></span>
+          </div>
+          <div class="progress-value" style="color: var(--red);">0%</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title">Metrics Breakdown</div>
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric-label">Scope Coverage</span>
+            <div class="metric-value">4.75</div>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Accuracy</span>
+            <div class="metric-value">3.88</div>
+          </div>
+          <div class="metric">
+            <span class="metric-label">User Experience</span>
+            <div class="metric-value">3.60</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="header" style="padding: 4px 6px 0 6px;">
+        <div class="title" style="gap: 6px;">
+          <div class="icon" style="width: 26px; height: 26px; font-size: 12px;">QA</div>
+          <div style="font-size: 14px; font-weight: 800;">Case results</div>
+        </div>
+        <span class="badge" style="background: linear-gradient(135deg, #63e0c7, #45e5aa);">Live</span>
+      </div>
+      <table aria-label="QA case scores">
+        <thead>
+          <tr>
+            <th>Metrics</th>
+            <th>Case 1<br><span class="subtle">Hero Scenario E2E</span></th>
+            <th>Case 2<br><span class="subtle">Advanced</span></th>
+            <th>Case 3<br><span class="subtle">Basic</span></th>
+            <th>Case 4<br><span class="subtle">Advanced</span></th>
+            <th>Case 5<br><span class="subtle">Basic</span></th>
+            <th>Case 6<br><span class="subtle">Basic</span></th>
+            <th>Avg</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Workbook Structure &amp; Organization</td>
+            <td class="pill teal">2.2</td>
+            <td class="pill green">3.0</td>
+            <td class="pill blue">1.0</td>
+            <td class="pill teal">2.8</td>
+            <td class="pill green">4.0</td>
+            <td class="pill teal">3.4</td>
+            <td class="pill green">2.73</td>
+          </tr>
+          <tr>
+            <td>Content Readability</td>
+            <td class="pill teal">2.0</td>
+            <td class="pill green">3.7</td>
+            <td class="pill green">4.3</td>
+            <td class="pill green">4.3</td>
+            <td class="pill green">4.7</td>
+            <td class="pill green">5.0</td>
+            <td class="pill green">4.00</td>
+          </tr>
+          <tr>
+            <td>Formatting clarity</td>
+            <td class="pill purple">4.75</td>
+            <td class="pill purple">5.00</td>
+            <td class="pill purple">5.00</td>
+            <td class="pill purple">4.30</td>
+            <td class="pill teal">3.75</td>
+            <td class="pill purple">5.00</td>
+            <td class="pill purple">4.63</td>
+          </tr>
+          <tr>
+            <td>Visual appeal</td>
+            <td class="pill blue">2.33</td>
+            <td class="pill teal">1.60</td>
+            <td class="pill blue">2.30</td>
+            <td class="pill blue">1.00</td>
+            <td class="pill green">4.00</td>
+            <td class="pill teal">3.60</td>
+            <td class="pill teal">2.47</td>
+          </tr>
+          <tr>
+            <td>Pass or fail</td>
+            <td><span class="status fail">Fail</span></td>
+            <td><span class="status fail">Fail</span></td>
+            <td><span class="status fail">Fail</span></td>
+            <td><span class="status fail">Fail</span></td>
+            <td><span class="status pass">Pass</span></td>
+            <td><span class="status pass">Pass</span></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
