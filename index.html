@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STCA Operation Team Meeting</title>
+  <style>
+    html,body{
+      margin:0;padding:0;height:100%;
+      background:black;color:white;
+      font-family:"Segoe UI",Arial,sans-serif;
+      overflow:hidden;
+    }
+    .slide{
+      display:none;
+      justify-content:center;align-items:center;flex-direction:column;
+      height:100vh;width:100vw;text-align:center;
+      transition:opacity .6s ease;
+      padding:0 6vw;box-sizing:border-box;
+    }
+    .active{display:flex;}
+    /* Gradients */
+    .gradient-blue{
+      background:linear-gradient(270deg,#6a11cb,#2575fc,#00c6ff,#6a11cb);
+      background-size:600% 600%;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation:shine 6s linear infinite;
+    }
+    .gradient-pink{
+      background:linear-gradient(270deg,#ff4d8d,#ff6b6b,#ff9a9e,#ff4d8d);
+      background-size:600% 600%;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation:shine 6s linear infinite;
+    }
+    @keyframes shine{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+    .controls{
+      position:absolute;bottom:30px;width:100%;
+      display:flex;justify-content:space-between;
+      padding:0 50px;box-sizing:border-box;
+    }
+    button{
+      background:rgba(255,255,255,0.1);color:white;
+      border:2px solid white;border-radius:10px;
+      padding:10px 30px;font-size:1.2em;cursor:pointer;
+      transition:background .3s ease;
+    }
+    button:hover{background:rgba(255,255,255,0.3);}
+    h1{font-size:5em;line-height:1.05;margin:.1em 0;}
+    h2{font-size:2.2em;margin:.2em 0;}
+    .row{
+      display:flex;flex-direction:row;align-items:center;justify-content:center;
+      gap:6vw;width:100%;text-align:center;flex-wrap:wrap;
+    }
+    .row h1{margin:0;white-space:nowrap;transition:all .8s ease;}
+    .demote{
+      -webkit-text-fill-color:white!important;
+      background:none!important;animation:none!important;
+      font-size:3em!important;opacity:.9;
+    }
+    .fade{opacity:0;transform:translateY(8px);transition:opacity .8s ease,transform .8s ease;}
+    .fade.show{opacity:1;transform:translateY(0);}
+    .list{
+      list-style:none;padding:0;margin:1.8em 0 0;font-size:2.2em;line-height:1.5;
+    }
+    .list li{margin:.35em 0;}
+    .card{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:18px;padding:2.4rem 2.2rem;
+      max-width:min(900px,90vw);
+      box-shadow:0 20px 60px rgba(0,0,0,0.35);
+    }
+  </style>
+</head>
+<body>
+  <!-- 1: Opening -->
+  <div class="slide active" id="slide1">
+    <h1 class="gradient-blue">STCA Operation Team Meeting</h1>
+    <h2 class="gradient-pink">Dec 2025</h2>
+  </div>
+
+  <!-- 2: Agenda -->
+  <div class="slide" id="slide2">
+    <h1 class="gradient-blue">Agenda</h1>
+    <ul class="list">
+      <li class="gradient-pink">Top of Mind – Janice</li>
+      <li class="gradient-pink">Introducing SOX New Websites – Cecilia</li>
+      <li class="gradient-pink">Thank-you Session</li>
+      <li class="gradient-pink">Birthday Celebration</li>
+    </ul>
+  </div>
+
+  <!-- 3: Top of Mind -->
+  <div class="slide" id="slide3">
+    <div class="row">
+      <h1 id="s3-left" class="gradient-blue">Top of Mind</h1>
+      <h1 id="s3-right" class="fade gradient-blue">Janice</h1>
+    </div>
+  </div>
+
+  <!-- 4: SOX New Websites -->
+  <div class="slide" id="slide4">
+    <div class="row">
+      <h1 id="s4-left" class="gradient-pink">SOX New Websites</h1>
+      <h1 id="s4-right" class="fade gradient-pink">Cecilia</h1>
+    </div>
+  </div>
+
+  <!-- 5: Thank-YOU Session -->
+    <div class="slide" id="slide5">
+      <h1 class="gradient-blue">Thank-YOU Session</h1>
+      <div class="card">
+        <h2 class="gradient-pink">Celebrating Contributions</h2>
+        <p style="font-size:1.7em;line-height:1.5;margin:0;">Share appreciation highlights and shout-outs from the team.</p>
+      </div>
+    </div>
+
+  <!-- 6: Warm Wishes -->
+  <div class="slide" id="slide6">
+    <h1 class="gradient-blue">Warm Wishes</h1>
+    <h2 class="gradient-pink">December Birthdays</h2>
+  </div>
+
+  <!-- 7: Birthday Stars -->
+  <div class="slide" id="slide7">
+    <h1 class="gradient-blue">Birthday Stars</h1>
+    <ul class="list">
+      <li class="gradient-pink">Cecilia</li>
+      <li class="gradient-pink">Cherry</li>
+      <li class="gradient-pink">Fiona</li>
+      <li class="gradient-pink">Frida</li>
+      <li class="gradient-pink">Huilin</li>
+      <li class="gradient-pink">Na</li>
+      <li class="gradient-pink">Yanfang</li>
+    </ul>
+  </div>
+
+  <!-- 8: Next Meeting Organizer -->
+  <div class="slide" id="slide8">
+    <h1 class="gradient-blue">Next Meeting Organizer</h1>
+    <h2 class="gradient-pink">Myra Wang</h2>
+  </div>
+
+  <!-- 9: Closing -->
+  <div class="slide" id="slide9">
+    <h1 class="gradient-blue">Thank you!</h1>
+    <h2 class="gradient-pink">See you next time</h2>
+  </div>
+
+  <div class="controls">
+    <button id="prev">⟵ Back</button>
+    <button id="next">Next ⟶</button>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let current = 0;
+    function showSlide(i){
+      slides.forEach((s,n)=>s.classList.toggle('active', n===i));
+      runAuto(i);
+    }
+    function runAuto(i){
+      if(i===2) autoAnim('s3-left','s3-right');
+      if(i===3) autoAnim('s4-left','s4-right');
+    }
+    function autoAnim(leftId,rightId){
+      const left = document.getElementById(leftId);
+      const right = document.getElementById(rightId);
+      if(!left || !right) return;
+      left.classList.remove('demote');
+      right.classList.remove('show');
+      setTimeout(()=>left.classList.add('demote'),1500);
+      setTimeout(()=>right.classList.add('show'),2200);
+    }
+    function next(){ current = (current+1) % slides.length; showSlide(current); }
+    function prev(){ current = (current-1+slides.length) % slides.length; showSlide(current); }
+    document.getElementById('next').onclick = next;
+    document.getElementById('prev').onclick = prev;
+    document.addEventListener('keydown', e=>{
+      if(e.key==='ArrowRight' || e.key===' ') next();
+      if(e.key==='ArrowLeft') prev();
+    });
+  </script>
+</body>
+</html>
